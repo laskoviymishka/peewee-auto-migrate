@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{fa04a781-88c1-4490-bd05-23fcf842c7a3}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>
+    </StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="auto_migrator\" />
+    <Folder Include="tests\" />
+    <Folder Include="tests\test_migrations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="auto_migrator\model.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="auto_migrator\repository.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="auto_migrator\utils.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="auto_migrator\__init__.py" />
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="setup.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\sample_model.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_auto_migrator.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_migrations\m_201711161820_init.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_migrations\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

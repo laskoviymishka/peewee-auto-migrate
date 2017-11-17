@@ -1,0 +1,2 @@
+import os
+import tests.test_migrations.m_201711161820_init
