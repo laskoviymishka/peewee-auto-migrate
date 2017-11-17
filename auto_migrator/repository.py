@@ -6,28 +6,27 @@ from playhouse.migrate import SqliteMigrator, SchemaMigrator, migrate
 from abc import ABCMeta
 from typing import List
 
-migrations: List[BaseMigration] = []
+migrations: List[Migration] = []
+
 
 def get_name(cls):
     return cls.__mro__[0].__module__.split('.').pop()
+
 
 def migration(cls):
     migrations.append(Migration(get_name(cls), cls, None))
     return cls
 
 
-
 class MigrationsRepository:
-    def __init__(self, db:Database, migration_path:str='migrations'):
+    def __init__(self, db: Database, migration_path: str = 'migrations'):
         self.db = db
         self.migrator = SchemaMigrator.from_database(self.db)
         MigrationModel._meta.database = db
         __import__(migration_path, locals=locals(), globals=globals())
 
-
     def code_migrations(self) -> List[Migration]:
         return migrations
-
 
     def db_migrations(self) -> List[Migration]:
         result = []
@@ -35,9 +34,8 @@ class MigrationsRepository:
             MigrationModel.create_table()
 
         for row in MigrationModel.select():
-            result.append(Migration(row.migration_id, next(item.name == row.migration_id for item in migrations) ,True))
+            result.append(Migration(row.migration_id, next(item.name == row.migration_id for item in migrations), True))
         return result
-
 
     def all_migrations(self) -> List[Migration]:
         total = self.db_migrations()
@@ -49,9 +47,9 @@ class MigrationsRepository:
 
         return total
 
-
-    def save(self, migration:BaseMigration) -> None:
-        MigrationModel.insert(migration_id=migration.name).execute()
+    def save(self, migration: Migration) -> None:
+        with self.db.atomic():
+            MigrationModel.insert(migration_id=migration.name).execute()
 
 
 class CodeScafolder:
@@ -60,11 +58,10 @@ class CodeScafolder:
 
 
 class Migrator:
-    def __init__(self, migration_repo:MigrationsRepository):
-        self.migration_repo:MigrationsRepository = migration_repo
+    def __init__(self, migration_repo: MigrationsRepository):
+        self.migration_repo: MigrationsRepository = migration_repo
 
-
-    def migrate(self, target_migration:str=None) -> None:
+    def migrate(self, target_migration: str = None) -> None:
         with self.db.atomic():
             for migration in self.migration_repo.all_migrations():
                 if not migration.applied and migration.name > target_migration:

@@ -8,4 +8,5 @@ setup(name='peewee-auto-migrate',
       author_email='laskoviymishka@gmail.com',
       license='MIT',
       packages=['peewee-auto-migrate'],
-      zip_safe=False)
+      zip_safe=False,
+      install_requires=['peewee'])
