@@ -4,12 +4,14 @@ from auto_migrator.model import MigrationModel
 from auto_migrator.model import Migration
 from playhouse.migrate import SqliteMigrator, SchemaMigrator, migrate
 from abc import ABCMeta
-from typing import List
+from typing import List, TypeVar, Callable
+
+from auto_migrator.utils import find
 
 migrations: List[Migration] = []
 
 
-def get_name(cls):
+def get_name(cls: type) -> str:
     return cls.__mro__[0].__module__.split('.').pop()
 
 
@@ -34,7 +36,11 @@ class MigrationsRepository:
             MigrationModel.create_table()
 
         for row in MigrationModel.select():
-            result.append(Migration(row.migration_id, next(item.name == row.migration_id for item in migrations), True))
+            coded_item = find(migrations, lambda x: x.name == row.migration_id)
+            if coded_item is None:
+                raise ImportError('migration is not codded ' + row.migration_id)
+
+            result.append(Migration(row.migration_id, coded_item, True))
         return result
 
     def all_migrations(self) -> List[Migration]:
