@@ -1,4 +1,4 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 from playhouse.migrate import Operation
 from typing import Set
 from peewee import Model
@@ -7,11 +7,11 @@ from playhouse.migrate import SchemaMigrator
 
 
 class BaseMigration(metaclass=ABCMeta):
-    def up(self, migrator: SchemaMigrator) -> Set[Operation]:
-        pass
+    @abstractmethod
+    def up(self, migrator: SchemaMigrator) -> Set[Operation]: ...
 
-    def down(self, migrator: SchemaMigrator) -> Set[Operation]:
-        pass
+    @abstractmethod
+    def down(self, migrator: SchemaMigrator) -> Set[Operation]: ...
 
 
 class MigrationModel(Model):

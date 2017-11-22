@@ -56,14 +56,9 @@ class MigrationsRepository:
             MigrationModel.insert(migration_id=migration.name).execute()
 
 
-class CodeScafolder:
-    def generate(self, migration: Migration) -> str:
-        pass
-
-
 class Migrator:
     def __init__(self, migration_repo: MigrationsRepository):
-        self.migration_repo: MigrationsRepository = migration_repo
+        self.migration_repo = migration_repo
 
     def migrate(self, target_migration: str = None) -> None:
         with self.db.atomic():
