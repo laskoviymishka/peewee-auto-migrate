@@ -1,10 +1,8 @@
-from peewee import Database, Model, CharField
-from auto_migrator.model import BaseMigration
+from peewee import Database
 from auto_migrator.model import MigrationModel
 from auto_migrator.model import Migration
-from playhouse.migrate import SqliteMigrator, SchemaMigrator, migrate
-from abc import ABCMeta
-from typing import List, TypeVar, Callable
+from playhouse.migrate import SchemaMigrator, migrate
+from typing import List
 
 from auto_migrator.utils import find
 
